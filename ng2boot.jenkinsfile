@@ -1,0 +1,46 @@
+node('commit-stage') {
+    try {
+        def ng2boot_github_url = 'git@github.com:sch3lp/ng2-springboot.git'
+        def ui_dir = 'ng2boot-ui'
+        def rest_dir = 'ng2boot-rest'
+        stage('Checkout'){
+            checkout(
+                    changelog: true,
+                    poll: true,
+                    scm: [
+                            $class           : 'GitSCM',
+                            branches         : [[name: '*/master']],
+                            userRemoteConfigs: [[
+                                                        credentialsId: 'github_jenkins_key',
+                                                        url          : ng2boot_github_url
+                                                ]]
+                    ]
+            )
+            sh "chmod a+x gradlew"
+        }
+
+        stage('Build UI') {
+            try {
+                sh "./gradlew -b $ui_dir/build.gradle clean npmInstall check"
+            } finally {
+                step([$class: "JUnitResultArchiver", testResults: "**/build/**/TESTS-*.xml"])
+            }
+        }
+
+        stage('Build REST') {
+            try {
+                sh "./gradlew -b $rest_dir/build.gradle clean check -PspringProfile=jenkins$EXECUTOR_NUMBER"
+            } finally {
+                step([$class: "JUnitResultArchiver", testResults: "**/build/**/TEST-*.xml"])
+            }
+        }
+        
+        stage('Package EAR') {
+            sh "./gradlew assemble"
+        }
+
+    } catch (err) {
+        currentBuild.result = 'FAILURE'
+        step([$class: 'ClaimPublisher'])
+    }
+}

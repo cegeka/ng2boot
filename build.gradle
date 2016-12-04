@@ -1,0 +1,48 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.github.mamohr.gradle:jboss-deployment-structure:0.9.0'
+	}
+}
+
+apply plugin: 'ear'
+apply plugin: 'com.github.mamohr.jboss-deployment-structure'
+
+
+allprojects {
+	repositories {
+		mavenCentral()
+	}
+}
+subprojects {
+	apply plugin: 'java'
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+}
+
+dependencies {
+	deploy project(path:':ng2boot-rest', configuration: 'archives')
+	deploy project(path:':ng2boot-ui', configuration: 'archives')
+}
+
+ear {
+	baseName = 'ng2boot'
+	version = '0.0.1-SNAPSHOT'
+	deploymentDescriptor {
+		webModule('ng2boot-ui.war', "/ng2boot")
+		webModule('ng2boot-rest.war', "/ng2boot/api")
+	}
+}
+
+jbossDeploymentStructure {
+    exclude 'org.jboss.logging'
+
+    subdeployments {
+        'ng2boot-rest.war' {
+            exclude 'org.jboss.logging'
+        }
+    }
+}

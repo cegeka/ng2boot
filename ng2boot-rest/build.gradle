@@ -1,0 +1,72 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    repositories {
+        mavenCentral()
+        // maven {
+        //     url "http://your-nexusurl.com/nexus/content/groups/public/"
+        // }
+        // maven {
+        //     credentials {
+        //         username nexusUsername
+        //         password nexusPassword
+        //     }
+        //     url 'http://your-nexusurl.com/repositories/ng2boot-releases/'
+        // }
+
+        // maven {
+        //     credentials {
+        //         username nexusUsername
+        //         password nexusPassword
+        //     }
+        //     url 'http://your-nexusurl.com/repositories/ng2boot-snapshots/'
+        // }
+    }
+
+    ext {
+        springBootVersion = '1.4.2.RELEASE'
+        jerseyVersion = "2.23.2"
+    }
+
+    compile("org.springframework.boot:spring-boot-starter-jersey:$springBootVersion") //jax-rs instead of spring-mvc
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+    compile("org.hibernate:hibernate-java8:5.0.0.Final") //LocalDateTime hibernate converters
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.1") //to automatically deserialize LocalDateTimes etc.
+
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion") //excluded to package into .war, but still able to run locally standalone
+
+    // runtime 'com.oracle.jdbc:ojdbc6:11.2.0.4' //switch with whatever database jdbc driver you require
+
+    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    testCompile("junit:junit:4.12")
+    testCompile("org.assertj:assertj-core:3.2.0")
+    testCompile("org.mockito:mockito-core:2.0.31-beta")
+    testCompile("org.glassfish.jersey.core:jersey-client:$jerseyVersion")
+    testCompile("org.glassfish.jersey.ext:jersey-proxy-client:$jerseyVersion")
+}
+
+test {
+    reports {
+        junitXml.enabled = true
+        html.enabled = false
+    }
+    systemProperty "spring.profiles.active", project.findProperty("springProfile") //so you can pass a profile so springboot test runtime can use environment specific database
+}
