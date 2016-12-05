@@ -1,4 +1,4 @@
-package be.swsb.ng2boot;
+package be.cegeka.ng2boot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

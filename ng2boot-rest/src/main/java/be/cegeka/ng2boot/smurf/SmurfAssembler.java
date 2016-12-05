@@ -1,4 +1,4 @@
-package be.swsb.ng2boot.smurf;
+package be.cegeka.ng2boot.smurf;
 
 public class SmurfAssembler {
     public static SmurfR toRepresentation(Smurf smurf) {

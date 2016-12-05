@@ -1,4 +1,4 @@
-package be.swsb.ng2boot.smurf;
+package be.cegeka.ng2boot.smurf;
 
 import org.springframework.test.util.ReflectionTestUtils;
 

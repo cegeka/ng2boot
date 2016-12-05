@@ -1,4 +1,4 @@
-package be.swsb.ng2boot.smurf;
+package be.cegeka.ng2boot.smurf;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 
-import static be.swsb.ng2boot.smurf.SmurfTestBuilder.aDefaultSmurf;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -40,7 +39,7 @@ public class SmurfRepositoryIntegrationTest {
     @Test
     public void findById_WhenSmurfWithGivenIdExists_ThenReturnsSmurf() throws Exception {
         LocalDate creationDate = LocalDate.now();
-        Smurf persistedSmurf = tem.persist(aDefaultSmurf()
+        Smurf persistedSmurf = tem.persist(SmurfTestBuilder.aDefaultSmurf()
                 .withCreationDate(creationDate)
                 .build());
 

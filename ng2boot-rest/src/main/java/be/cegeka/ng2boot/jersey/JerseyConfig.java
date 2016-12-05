@@ -1,7 +1,7 @@
-package be.swsb.ng2boot.jersey;
+package be.cegeka.ng2boot.jersey;
 
 
-import be.swsb.ng2boot.smurf.SmurfResourceBase;
+import be.cegeka.ng2boot.smurf.SmurfResourceBase;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
 

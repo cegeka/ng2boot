@@ -1,5 +1,7 @@
-package be.swsb.ng2boot.smurf;
+package be.cegeka.ng2boot.smurf;
 
+import be.cegeka.ng2boot.jaxrs.test.ResponseAssertions;
+import org.assertj.core.api.Assertions;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.junit.Before;
@@ -14,7 +16,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 
-import static be.swsb.ng2boot.jaxrs.test.ResponseAssertions.assertThat;
+import static be.cegeka.ng2boot.jaxrs.test.ResponseAssertions.assertThat;
 import static java.time.LocalDate.now;
 import static javax.ws.rs.core.Response.Status.OK;
 
@@ -52,8 +54,8 @@ public class SmurfResourceBaseIntegrationTest {
 
         Response response = smurfResource.all();
 
-        assertThat(response).hasStatus(OK);
-        assertThat(response.readEntity(SmurfR[].class)).containsOnly(expectedSmurf);
+        ResponseAssertions.assertThat(response).hasStatus(OK);
+        Assertions.assertThat(response.readEntity(SmurfR[].class)).containsOnly(expectedSmurf);
     }
 
 }

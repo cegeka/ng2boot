@@ -1,4 +1,4 @@
-package be.swsb.ng2boot.jaxrs.test;
+package be.cegeka.ng2boot.jaxrs.test;
 
 import org.assertj.core.api.Assertions;
 
